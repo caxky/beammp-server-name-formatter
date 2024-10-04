@@ -1,0 +1,1 @@
+# beammp-server-name-formatter
