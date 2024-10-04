@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeamMP Server Name Formatter</title>
+<style>
+  #output {
+    margin-top: 20px;
+  }
+</style>
+<script>
+  function applyFormatting() {
+    var inputText = document.getElementById('inputText').value;
+    var formattedText = applyFormattingCode(inputText);
+    document.getElementById('output').innerHTML = formattedText;
+  }
+
+  function applyFormattingCode(text) {
+    // Define the mapping for formatting codes
+    var formatMapping = {
+      '^r': '</b></i></u></strike></span><span style="color: black;">',
+      '^l': '<b>',
+      '^m': '<strike>',
+      '^n': '<u>',
+      '^o': '<i>',
+      '^0': '</span><span style="color: black;">',
+      '^1': '</span><span style="color: blue;">',
+      '^2': '</span><span style="color: green;">',
+      '^3': '</span><span style="color: lightblue;">',
+      '^4': '</span><span style="color: red;">',
+      '^5': '</span><span style="color: pink;">',
+      '^6': '</span><span style="color: orange;">',
+      '^7': '</span><span style="color: gray;">',
+      '^8': '</span><span style="color: darkgray;">',
+      '^9': '</span><span style="color: mediumpurple;">',
+      '^a': '</span><span style="color: lime;">',
+      '^b': '</span><span style="color: aqua;">',
+      '^c': '</span><span style="color: darkorange;">',
+      '^d': '</span><span style="color: lightpink;">',
+      '^e': '</span><span style="color: yellow;">',
+      '^f': '</span><span style="color: white;">'
+    };
+
+    // Regular expression to match formatting codes
+    var regex = /\^([rlnmof0-9a-f])/g;
+
+    var formattedText = '';
+    var currentColor = '';
+
+    // Replace formatting codes with HTML tags
+    formattedText = text.replace(regex, function(match, code) {
+      if (code === 'r') {
+        return formatMapping['^r'] || '';
+      } else {
+        if (code === '0') currentColor = 'black';
+        else if (code === '1') currentColor = 'blue';
+        else if (code === '2') currentColor = 'green';
+        else if (code === '3') currentColor = 'lightblue';
+        else if (code === '4') currentColor = 'red';
+        else if (code === '5') currentColor = 'pink';
+        else if (code === '6') currentColor = 'orange';
+        else if (code === '7') currentColor = 'gray';
+        else if (code === '8') currentColor = 'darkgray';
+        else if (code === '9') currentColor = 'mediumpurple';
+        else if (code === 'a') currentColor = 'lime';
+        else if (code === 'b') currentColor = 'aqua';
+        else if (code === 'c') currentColor = 'darkorange';
+        else if (code === 'd') currentColor = 'lightpink';
+        else if (code === 'e') currentColor = 'yellow';
+        else if (code === 'f') currentColor = 'white';
+        
+        return '</span><span style="color: ' + currentColor + ';">' + (formatMapping['^' + code] || '');
+      }
+    });
+
+    // Close any open formatting tags
+    formattedText += '</span>';
+    
+    return formattedText;
+  }
+</script>
+</head>
+<body bgcolor=#8C8C8C>
+  <div>
+    <input type="text" id="inputText" value="^l^6[ ^e CA ^6] ^4Your Name Here ^6| ^fVanilla ^6| ^fUtah" onchange="applyFormatting()">
+    <button onclick="applyFormatting()">Apply Formatting</button>
+  </div>
+  <div id="output" style="font:arial;font-size:14px"></div>
+</body>
+</html>
