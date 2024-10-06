@@ -1,91 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BeamMP Server Name Formatter</title>
-<style>
-  #output {
-    margin-top: 20px;
-  }
-</style>
-<script>
-  function applyFormatting() {
-    var inputText = document.getElementById('inputText').value;
-    var formattedText = applyFormattingCode(inputText);
-    document.getElementById('output').innerHTML = formattedText;
-  }
-
-  function applyFormattingCode(text) {
-    // Define the mapping for formatting codes
-    var formatMapping = {
-      '^r': '</b></i></u></strike></span><span style="color: black;">',
-      '^l': '<b>',
-      '^m': '<strike>',
-      '^n': '<u>',
-      '^o': '<i>',
-      '^0': '</span><span style="color: black;">',
-      '^1': '</span><span style="color: blue;">',
-      '^2': '</span><span style="color: green;">',
-      '^3': '</span><span style="color: lightblue;">',
-      '^4': '</span><span style="color: red;">',
-      '^5': '</span><span style="color: pink;">',
-      '^6': '</span><span style="color: orange;">',
-      '^7': '</span><span style="color: gray;">',
-      '^8': '</span><span style="color: darkgray;">',
-      '^9': '</span><span style="color: mediumpurple;">',
-      '^a': '</span><span style="color: lime;">',
-      '^b': '</span><span style="color: aqua;">',
-      '^c': '</span><span style="color: darkorange;">',
-      '^d': '</span><span style="color: lightpink;">',
-      '^e': '</span><span style="color: yellow;">',
-      '^f': '</span><span style="color: white;">'
-    };
-
-    // Regular expression to match formatting codes
-    var regex = /\^([rlnmof0-9a-f])/g;
-
-    var formattedText = '';
-    var currentColor = '';
-
-    // Replace formatting codes with HTML tags
-    formattedText = text.replace(regex, function(match, code) {
-      if (code === 'r') {
-        return formatMapping['^r'] || '';
-      } else {
-        if (code === '0') currentColor = 'black';
-        else if (code === '1') currentColor = 'blue';
-        else if (code === '2') currentColor = 'green';
-        else if (code === '3') currentColor = 'lightblue';
-        else if (code === '4') currentColor = 'red';
-        else if (code === '5') currentColor = 'pink';
-        else if (code === '6') currentColor = 'orange';
-        else if (code === '7') currentColor = 'gray';
-        else if (code === '8') currentColor = 'darkgray';
-        else if (code === '9') currentColor = 'mediumpurple';
-        else if (code === 'a') currentColor = 'lime';
-        else if (code === 'b') currentColor = 'aqua';
-        else if (code === 'c') currentColor = 'darkorange';
-        else if (code === 'd') currentColor = 'lightpink';
-        else if (code === 'e') currentColor = 'yellow';
-        else if (code === 'f') currentColor = 'white';
-        
-        return '</span><span style="color: ' + currentColor + ';">' + (formatMapping['^' + code] || '');
-      }
-    });
-
-    // Close any open formatting tags
-    formattedText += '</span>';
-    
-    return formattedText;
-  }
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamMP Server Name Formatter</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body bgcolor=#8C8C8C>
-  <div>
-    <input type="text" id="inputText" value="^l^6[ ^e CA ^6] ^4Your Name Here ^6| ^fVanilla ^6| ^fUtah" onchange="applyFormatting()">
-    <button onclick="applyFormatting()">Apply Formatting</button>
-  </div>
-  <div id="output" style="font:arial;font-size:14px"></div>
+<body>
+    <div class="container">
+        <h1 style="margin-bottom: 0;">BeamMP Server Name Formatter</h1>
+        <h4 style="margin-top: 0;">Created by <a href="https://github.com/caxky" target="_blank" rel="noopener noreferrer">caxky</a></h4>
+        <input type="text" id="input" value="^0My ^4BeamMP^1! ^2Server ^l^4Name ^e^o!" style="display: inline-block; margin: auto;">
+        <button onclick="processInput()" style="display: inline-block;">Apply</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <div class="container">
+      <div style="display: flex; justify-content: space-between;">
+        <table style="flex: 1; margin-right: 10px;">
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+            <tr><td>^r</td><td>Reset</td></tr>
+            <tr><td>^p</td><td>Newline (descriptions only)</td></tr>
+            <tr><td>^n</td><td>Underline</td></tr>
+            <tr><td>^l</td><td>Bold</td></tr>
+            <tr><td>^m</td><td>Strike-through</td></tr>
+            <tr><td>^o</td><td>Italic</td></tr>
+            <tr><td>^0</td><td>Black</td></tr>
+            <tr><td>^1</td><td>Blue</td></tr>
+            <tr><td>^2</td><td>Green</td></tr>
+            <tr><td>^3</td><td>Light blue</td></tr>
+        </table>
+        <table style="flex: 1; margin-left: 10px;">
+          <tr>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+          <tr><td>^4</td><td>Red</td></tr>
+          <tr><td>^5</td><td>Pink</td></tr>
+          <tr><td>^6</td><td>Orange</td></tr>
+          <tr><td>^7</td><td>Grey</td></tr>
+          <tr><td>^8</td><td>Dark grey</td></tr>
+          <tr><td>^9</td><td>Light purple</td></tr>
+          <tr><td>^a</td><td>Light green</td></tr>
+          <tr><td>^b</td><td>Light blue</td></tr>
+          <tr><td>^c</td><td>Dark orange</td></tr>
+          <tr><td>^d</td><td>Light pink</td></tr>
+          <tr><td>^e</td><td>Yellow</td></tr>
+          <tr><td>^f</td><td>White</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="container" style="margin-top: 20px;">
+        <a href="https://github.com/caxky/beammp-server-name-formatter" target="_blank" rel="noopener noreferrer">
+            View on GitHub
+        </a>
+    </div>
+
+    <script>
+        function processInput() {
+            const input = document.getElementById('input').value;
+            const output = document.getElementById('output');
+            
+            // Apply formatting rules
+            let formattedText = input
+                .replace(/\^r/g, '</span>') // Reset
+                .replace(/\^p/g, '<br>') // Newline
+                .replace(/\^n/g, '<span style="text-decoration: underline;">') // Underline
+                .replace(/\^l/g, '<span style="font-weight: bold;">') // Bold
+                .replace(/\^m/g, '<span style="text-decoration: line-through;">') // Strike-through
+                .replace(/\^o/g, '<span style="font-style: italic;">') // Italic
+                .replace(/\^0/g, '<span style="color: black;">') // Black
+                .replace(/\^1/g, '<span style="color: blue;">') // Blue
+                .replace(/\^2/g, '<span style="color: green;">') // Green
+                .replace(/\^3/g, '<span style="color: lightblue;">') // Light blue
+                .replace(/\^4/g, '<span style="color: red;">') // Red
+                .replace(/\^5/g, '<span style="color: pink;">') // Pink
+                .replace(/\^6/g, '<span style="color: orange;">') // Orange
+                .replace(/\^7/g, '<span style="color: grey;">') // Grey
+                .replace(/\^8/g, '<span style="color: darkgrey;">') // Dark grey
+                .replace(/\^9/g, '<span style="color: mediumpurple;">') // Light purple
+                .replace(/\^a/g, '<span style="color: lightgreen;">') // Light green
+                .replace(/\^b/g, '<span style="color: lightblue;">') // Light blue
+                .replace(/\^c/g, '<span style="color: darkorange;">') // Dark orange
+                .replace(/\^d/g, '<span style="color: lightpink;">') // Light pink
+                .replace(/\^e/g, '<span style="color: yellow;">') // Yellow
+                .replace(/\^f/g, '<span style="color: white;">'); // White
+
+            // Set the formatted text as HTML content
+            output.innerHTML = formattedText;
+        }
+
+        // Call processInput on page load to show the default output
+        window.onload = processInput;
+    </script>
 </body>
 </html>
